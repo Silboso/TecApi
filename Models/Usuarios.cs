@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 
 namespace TecApi.Models
 {
-
     [Table("usuarios")]
-    public class ModeloUsuario
+    public class Usuarios
     {
         [Key]
         [Column("idusuario")]

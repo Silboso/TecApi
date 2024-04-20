@@ -17,27 +17,27 @@ namespace TecApi.Controllers
         }
 
         [HttpGet(Name = "GetAll")]
-        public IEnumerable<ModeloUsuario> Get()
+        public IEnumerable<Usuarios> Get()
         {
-            return _context.Usuarios.ToList();
+            return _context.Usuario.ToList();
         }
 
         [HttpGet("{id}")]
-        public ModeloUsuario GetById(int id)
+        public Usuarios GetById(int id)
         {
-            return _context.Usuarios.Find(id);
+            return _context.Usuario.Find(id);
         }
 
         [HttpPost]
-        public IActionResult Post(ModeloUsuario usuario)
+        public IActionResult Post(Usuarios usuario)
         {
-            _context.Usuarios.Add(usuario);
+            _context.Usuario.Add(usuario);
             _context.SaveChanges();
             return CreatedAtRoute("GetUsuario", new { id = usuario.IdUsuario }, usuario);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, ModeloUsuario usuario)
+        public IActionResult Put(int id, Usuarios usuario)
         {
             if (id != usuario.IdUsuario)
             {
@@ -51,12 +51,12 @@ namespace TecApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var usuario = _context.Usuarios.Find(id);
+            var usuario = _context.Usuario.Find(id);
             if (usuario == null)
             {
                 return NotFound();
             }
-            _context.Usuarios.Remove(usuario);
+            _context.Usuario.Remove(usuario);
             _context.SaveChanges();
             return NoContent();
         }
