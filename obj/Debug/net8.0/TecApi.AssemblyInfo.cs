@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TecApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bbcbdfa926a8ef52a302fe0f2a207822348e6af3")]
 [assembly: System.Reflection.AssemblyProductAttribute("TecApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TecApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

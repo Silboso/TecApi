@@ -35,3 +35,4 @@ C:\Users\MANE1\source\repos\TecApi\obj\Debug\net8.0\refint\TecApi.dll
 C:\Users\MANE1\source\repos\TecApi\obj\Debug\net8.0\TecApi.pdb
 C:\Users\MANE1\source\repos\TecApi\obj\Debug\net8.0\TecApi.genruntimeconfig.cache
 C:\Users\MANE1\source\repos\TecApi\obj\Debug\net8.0\ref\TecApi.dll
+C:\Users\MANE1\source\repos\TecApi\obj\Debug\net8.0\TecApi.sourcelink.json
