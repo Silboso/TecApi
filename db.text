@@ -1,0 +1,153 @@
+-- Creación de la tabla 'usuarios'
+CREATE TABLE usuarios (
+    IdUsuario SERIAL PRIMARY KEY,
+    Foto VARCHAR(255),
+    Nombre VARCHAR(255),
+    ApellidoPaterno VARCHAR(255),
+    ApellidoMaterno VARCHAR(255),
+    Matricula INT,
+    Token VARCHAR(255),
+    Carrera VARCHAR(255),
+    Semestre VARCHAR(255),
+    Sexo BOOLEAN,
+    Rol INT CHECK (Rol >= 0 AND Rol <= 9)
+);
+
+-- Creación de la tabla 'categoriasAlimentos'
+CREATE TABLE categoriasAlimentos (
+    IdCategoria SERIAL PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL
+);
+
+-- Creación de la tabla 'valoraciones'
+CREATE TABLE valoraciones (
+    IdValoracion SERIAL PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    Valor INT NOT NULL,
+    FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario)
+);
+
+-- Creación de la tabla 'alimentos'
+CREATE TABLE alimentos (
+    IdAlimento SERIAL PRIMARY KEY,
+    Url TEXT,
+    Precio DECIMAL(10,2) NOT NULL,
+    IdCategoria INT NOT NULL,
+    Descripcion TEXT,
+    Nombre VARCHAR(255) NOT NULL,
+    IdValoracion INT,
+    FOREIGN KEY (IdCategoria) REFERENCES categoriasAlimentos(IdCategoria),
+    FOREIGN KEY (IdValoracion) REFERENCES valoraciones(IdValoracion)
+);
+
+-- Creación de la tabla 'carrito'
+CREATE TABLE carrito (
+    IdUsuario INT NOT NULL,
+    IdAlimento INT NOT NULL,
+    Cantidad INT NOT NULL,
+    Total DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (IdUsuario, IdAlimento),
+    FOREIGN KEY (IdAlimento) REFERENCES alimentos(IdAlimento),
+    FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario)
+);
+
+-- Creación de la tabla 'pedidosEncabezado'
+CREATE TABLE pedidosEncabezado (
+    IdPedido SERIAL PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    Estatus VARCHAR(50) NOT NULL,
+    Total DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario)
+);
+
+-- Creación de la tabla 'pedidosDetalle'
+CREATE TABLE pedidosDetalle (
+    IdPedido INT NOT NULL,
+    IdAlimento INT NOT NULL,
+    Cantidad INT NOT NULL,
+    Precio DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (IdPedido) REFERENCES pedidosEncabezado(IdPedido),
+    FOREIGN KEY (IdAlimento) REFERENCES alimentos(IdAlimento)
+);
+
+-- Creación de la tabla 'Avisos'
+CREATE TABLE Avisos (
+    IdAviso SERIAL PRIMARY KEY,
+    Titulo VARCHAR(255) NOT NULL,
+    Contenido TEXT NOT NULL,
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    IdUsuario INT NOT NULL,
+    FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario)
+);
+
+-- Creación de la tabla 'Etiquetas'
+CREATE TABLE Etiquetas (
+    IdEtiqueta SERIAL PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL
+);
+
+-- Creación de la tabla 'AvisosEtiquetas'
+CREATE TABLE AvisosEtiquetas (
+    IdAviso INT NOT NULL,
+    IdEtiqueta INT NOT NULL,
+    PRIMARY KEY (IdAviso, IdEtiqueta),
+    FOREIGN KEY (IdAviso) REFERENCES Avisos(IdAviso),
+    FOREIGN KEY (IdEtiqueta) REFERENCES Etiquetas(IdEtiqueta)
+);
+
+-- Creación de la tabla 'Comentarios'
+CREATE TABLE Comentarios (
+    IdComentario SERIAL PRIMARY KEY,
+    Contenido TEXT NOT NULL,
+    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    IdUsuario INT NOT NULL,
+    IdAviso INT NOT NULL,
+    FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario),
+    FOREIGN KEY (IdAviso) REFERENCES Avisos(IdAviso)
+);
+
+-- Creación de la tabla 'FAQ'
+CREATE TABLE FAQ (
+    IdPregunta SERIAL PRIMARY KEY,
+    Pregunta TEXT NOT NULL,
+    Respuesta TEXT NOT NULL
+);
+
+
+-- Creacion de la tabla 'Conductores'
+CREATE TABLE Conductores (
+    IDConductor INT PRIMARY KEY,
+    IdUsuario INT,
+    Status BOOLEAN,
+    FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario)
+);
+
+-- Creacion de la tabla 'Directorio'
+CREATE TABLE Directorio (
+    IDDirectorio INT PRIMARY KEY,
+    IdUsuario INT,
+    MarcaA VARCHAR(30),
+    ModeloA VARCHAR(50),
+    ColorA VARCHAR(30),
+    Status BOOLEAN,
+    FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario)
+);
+
+-- Creacion de la tabla 'Horario'
+CREATE TABLE Horario (
+    IDHorario INT PRIMARY KEY,
+    IDDirectorio INT,
+    Dia VARCHAR(9),
+    HSalida TIME,
+    HRegreso TIME,
+    FOREIGN KEY (IDDirectorio) REFERENCES Directorio(IDDirectorio)
+);
+
+-- Creacion de la tabla 'Pines'
+CREATE TABLE Pines (
+    IDPin INT PRIMARY KEY,
+    IDDirectorio INT,
+    CoordenadaX VARCHAR(200),
+    CoordenadaY VARCHAR(200),
+    FOREIGN KEY (IDDirectorio) REFERENCES Directorio(IDDirectorio)
+);
