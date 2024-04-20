@@ -21,5 +21,11 @@ namespace TecApi.Models
 
         [Column("idaviso")]
         public int IdAviso { get; set; }
+
+        [ForeignKey("IdUsuario")]
+        public Usuarios Usuario { get; set; }
+
+        [ForeignKey("IdAviso")]
+        public Avisos Aviso { get; set; }
     }
 }

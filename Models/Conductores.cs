@@ -15,5 +15,8 @@ namespace TecApi.Models
 
         [Column("status")]
         public bool Status { get; set; }
+
+        [ForeignKey("IdUsuario")]
+        public Usuarios Usuario { get; set; }
     }
 }

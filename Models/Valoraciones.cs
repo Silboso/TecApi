@@ -15,5 +15,8 @@ namespace TecApi.Models
 
         [Column("valor")]
         public int Valor { get; set; }
+
+        [ForeignKey("IdUsuario")]
+        public Usuarios Usuario { get; set; }
     }
 }

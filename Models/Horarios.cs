@@ -21,5 +21,8 @@ namespace TecApi.Models
 
         [Column("hregreso")]
         public string HRegreso { get; set; }
+
+        [ForeignKey("IdDirectorio")]
+        public Directorios Directorio { get; set; }
     }
 }

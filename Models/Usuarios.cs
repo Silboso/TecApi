@@ -39,6 +39,14 @@ namespace TecApi.Models
         public bool Sexo { get; set; }
 
         [Column("rol")]
-        public int Rol { get; set; }
+        public RolUsuario Rol { get; set; }
+    }
+
+    public enum RolUsuario
+    {
+        Alumno,
+        Profesor,
+        Administrador,
+        Inactivo = 9
     }
 }

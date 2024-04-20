@@ -18,5 +18,11 @@ namespace TecApi.Models
 
         [Column("precio")]
         public decimal Precio { get; set; }
+
+        [ForeignKey("IdAlimento")]
+        public Alimentos Alimento { get; set; }
+
+        [ForeignKey("IdPedido")]
+        public PedidosEncabezados Pedido { get; set; }
     }
 }

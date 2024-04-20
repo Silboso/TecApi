@@ -16,28 +16,32 @@ namespace TecApi.Controllers
             _context = context;
         }
 
-        [HttpGet(Name = "GetAll")]
-        public IEnumerable<Usuarios> Get()
+        [HttpGet]
+        [Route("GetAllUsuarios")]
+        public IEnumerable<Usuarios> GetAllUsuarios()
         {
             return _context.Usuario.ToList();
         }
 
-        [HttpGet("{id}")]
-        public Usuarios GetById(int id)
+        [HttpGet]
+        [Route("GetUsuario/{id}", Name = "GetUsuario")]
+        public Usuarios GetUsuarioByID(int id)
         {
             return _context.Usuario.Find(id);
         }
 
         [HttpPost]
-        public IActionResult Post(Usuarios usuario)
+        [Route("PostUsuario")]
+        public IActionResult PostUsuario(Usuarios usuario)
         {
             _context.Usuario.Add(usuario);
             _context.SaveChanges();
             return CreatedAtRoute("GetUsuario", new { id = usuario.IdUsuario }, usuario);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, Usuarios usuario)
+        [HttpPut]
+        [Route("PutUsuario/{id}")]
+        public IActionResult PutUsuario(int id, Usuarios usuario)
         {
             if (id != usuario.IdUsuario)
             {
@@ -48,15 +52,17 @@ namespace TecApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete]
+        [Route("DeleteUsuario/{id}")]
+        public IActionResult DeleteUsuario(int id)
         {
             var usuario = _context.Usuario.Find(id);
             if (usuario == null)
             {
                 return NotFound();
             }
-            _context.Usuario.Remove(usuario);
+            usuario.Rol = RolUsuario.Inactivo;
+            _context.Entry(usuario).State = EntityState.Modified;
             _context.SaveChanges();
             return NoContent();
         }

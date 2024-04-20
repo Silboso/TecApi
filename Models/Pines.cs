@@ -18,5 +18,8 @@ namespace TecApi.Models
 
         [Column("coordenaday")]
         public string CoordenadaY { get; set; }
+
+        [ForeignKey("IdDirectorio")]
+        public Directorios Directorio { get; set; }
     }
 }

@@ -10,8 +10,13 @@ namespace TecApi.Models
         [Column("idaviso")]
         public int IdAviso { get; set; }
 
-        [Key]
         [Column("idetiqueta")]
         public int IdEtiqueta { get; set; }
+
+        [ForeignKey("IdAviso")]
+        public Avisos Aviso { get; set; }
+
+        [ForeignKey("IdEtiqueta")]
+        public Etiquetas Etiqueta { get; set; }
     }
 }

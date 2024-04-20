@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace TecApi.Models
 {
     [Table("alimentos")]
@@ -26,7 +25,7 @@ namespace TecApi.Models
         [Column("nombre")]
         public string Nombre { get; set; }
 
-        [Column("idvaloracion")]
-        public int IdValoracion { get; set; }
+        [ForeignKey("IdCategoria")]
+        public CategoriasAlimentos Categoria { get; set; }
     }
 }

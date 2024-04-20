@@ -24,7 +24,9 @@ CREATE TABLE valoraciones (
     IdValoracion SERIAL PRIMARY KEY,
     IdUsuario INT NOT NULL,
     Valor INT NOT NULL,
-    FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario)
+    IdAlimento INT NOT NULL,
+    FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario),
+    FOREIGN KEY (IdAlimento) REFERENCES alimentos(IdAlimento)
 );
 
 -- Creación de la tabla 'alimentos'
@@ -35,10 +37,9 @@ CREATE TABLE alimentos (
     IdCategoria INT NOT NULL,
     Descripcion TEXT,
     Nombre VARCHAR(255) NOT NULL,
-    IdValoracion INT,
-    FOREIGN KEY (IdCategoria) REFERENCES categoriasAlimentos(IdCategoria),
-    FOREIGN KEY (IdValoracion) REFERENCES valoraciones(IdValoracion)
+    FOREIGN KEY (IdCategoria) REFERENCES categoriasAlimentos(IdCategoria)
 );
+
 
 -- Creación de la tabla 'carrito'
 CREATE TABLE carrito (
