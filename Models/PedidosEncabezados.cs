@@ -18,5 +18,8 @@ namespace TecApi.Models
 
         [Column("total")]
         public decimal Total { get; set; }
+
+        [ForeignKey("IdUsuario")]
+        public Usuarios Usuario { get; set; }
     }
 }

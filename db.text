@@ -152,3 +152,31 @@ CREATE TABLE Pines (
     CoordenadaY VARCHAR(200),
     FOREIGN KEY (IDDirectorio) REFERENCES Directorio(IDDirectorio)
 );
+
+
+
+CREATE TYPE Categorias AS ENUM (
+    'Educación',
+    'Tecnología',
+    'Salud',
+    'Entretenimiento',
+    'Alimentación',
+    'Transporte',
+    'Viajes'
+);
+
+CREATE TABLE Beneficios (
+    Id SERIAL PRIMARY KEY,
+    Titulo VARCHAR(255) NOT NULL,
+    Descripcion TEXT,
+    Imagen VARCHAR(255),
+    Url VARCHAR(255),
+    Categoria categorias NOT NULL,
+    Fecha TIMESTAMP NOT NULL
+);
+
+CREATE TABLE Credenciales (
+    Id INT NOT NULL,
+    IdUsuario INT NOT NULL REFERENCES Usuarios(IdUsuario),
+    Serial VARCHAR(255) NOT NULL UNIQUE
+);

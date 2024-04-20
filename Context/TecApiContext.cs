@@ -12,13 +12,19 @@ namespace TecApi.Context
 
         public DbSet<AvisosEtiquetas> AvisoEtiqueta { get; set; }
 
+        public DbSet<Beneficios> Beneficio { get; set; }
+
         public DbSet<Carritos> Carrito { get; set; }
+
+        public DbSet<Categorias> Categoria { get; set; }
 
         public DbSet<CategoriasAlimentos> CategoriaAlimento { get; set; }
 
         public DbSet<Comentarios> Comentario { get; set; }
 
         public DbSet<Conductores> Conductor { get; set; }
+
+        public DbSet<Credenciales> Credencial { get; set; }
 
         public DbSet<Directorios> Directorio { get; set; }
 

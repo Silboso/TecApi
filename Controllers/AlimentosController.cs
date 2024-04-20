@@ -26,9 +26,14 @@ namespace TecApi.Controllers
 
         [HttpGet]
         [Route("GetAlimento/{id}", Name = "GetAlimento")]
-        public Alimentos GetAlimentoByID(int id)
+        public IActionResult GetAlimentoByID(int id)
         {
-            return _context.Alimento.Find(id);
+            var alimento = _context.Alimento.Include(a => a.Categoria).FirstOrDefault(a => a.IdAlimento == id);
+            if (alimento == null)
+            {
+                return NotFound();
+            }
+            return Ok(alimento);
         }
 
         [HttpPost]

@@ -25,9 +25,14 @@ namespace TecApi.Controllers
 
         [HttpGet]
         [Route("GetUsuario/{id}", Name = "GetUsuario")]
-        public Usuarios GetUsuarioByID(int id)
+        public IActionResult GetUsuarioByID(int id)
         {
-            return _context.Usuario.Find(id);
+            var usuario = _context.Usuario.Find(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return Ok(usuario);
         }
 
         [HttpPost]
