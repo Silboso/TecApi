@@ -15,5 +15,12 @@ namespace TecApi.Controllers
         {
             _context = context;
         }
+
+        [HttpGet]
+        [Route("GetAllCarritos")]
+        public IEnumerable<Carritos> GetAllCarritos()
+        {
+            return _context.Carrito.Include(c => c.Alimento).ToList();
+        }
     }
 }

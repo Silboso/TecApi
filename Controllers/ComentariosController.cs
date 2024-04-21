@@ -7,13 +7,20 @@ namespace TecApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ComentariosController
+    public class ComentariosController : ControllerBase
     {
         private readonly TecApiContext _context;
 
         public ComentariosController(TecApiContext context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        [Route("GetAllComentarios")]
+        public IEnumerable<Comentarios> GetAllComentarios()
+        {
+            return _context.Comentario.ToList();
         }
     }
 }
