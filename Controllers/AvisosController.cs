@@ -34,14 +34,5 @@ namespace TecApi.Controllers
             }
             return Ok(aviso);
         }
-
-        [HttpPost]
-        [Route("PostAviso")]
-        public IActionResult PostAviso(Avisos aviso)
-        {
-            _context.Aviso.Add(aviso);
-            _context.SaveChanges();
-            return CreatedAtRoute("GetAviso", new { id = aviso.IdAviso }, aviso);
-        }
     }
 }

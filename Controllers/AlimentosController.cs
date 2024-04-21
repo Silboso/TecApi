@@ -28,11 +28,14 @@ namespace TecApi.Controllers
         [Route("GetAlimento/{id}", Name = "GetAlimento")]
         public IActionResult GetAlimentoByID(int id)
         {
+            // Incluye la carga de la categoría correspondiente
             var alimento = _context.Alimento.Include(a => a.Categoria).FirstOrDefault(a => a.IdAlimento == id);
             if (alimento == null)
             {
+                // Si no se encuentra el alimento, devuelve un error
                 return NotFound();
             }
+            // Si se encuentra el alimento, lo devuelve
             return Ok(alimento);
         }
 
