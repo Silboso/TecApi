@@ -28,6 +28,9 @@ El contexto es la clase que se encarga de la conexión con la base de datos, no l
 Si se necesita un cambio en las configuraciones de contexto, pidanselas a alguien que sepa, no lo hagan ustedes.
 	>NO LE MENEEN<
 
+## _context
+Es la variable que se encarga de las operaciones con la base de datos, no le cambien el tipo por que si no le saben, se pueden desmadrar su controlador.
+Si tienen dudas con las operaciones, chat gpt le sabe bien a esa madre (tambien pregunten si quieren)
 
 ## Program.cs
 Lo mismo que el contexto, no le muevan ni de pedo.
