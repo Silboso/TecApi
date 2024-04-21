@@ -155,14 +155,9 @@ CREATE TABLE Pines (
 
 
 
-CREATE TYPE Categorias AS ENUM (
-    'Educación',
-    'Tecnología',
-    'Salud',
-    'Entretenimiento',
-    'Alimentación',
-    'Transporte',
-    'Viajes'
+CREATE Table CategoriaBeneficio (
+    IdCategoriaBeneficio SERIAL PRIMARY KEY,
+    Nombre VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Beneficios (
@@ -171,8 +166,9 @@ CREATE TABLE Beneficios (
     Descripcion TEXT,
     Imagen VARCHAR(255),
     Url VARCHAR(255),
-    Categoria categorias NOT NULL,
-    Fecha TIMESTAMP NOT NULL
+    IdCategoriaBeneficio INT NOT NULL,
+    Fecha TIMESTAMP NOT NULL,
+    FOREIGN KEY (IdCategoriaBeneficio) REFERENCES CategoriaBeneficio(IdCategoriaBeneficio)
 );
 
 CREATE TABLE Credenciales (

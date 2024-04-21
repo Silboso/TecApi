@@ -8,8 +8,8 @@ namespace TecApi.Models
     public class Beneficios
     {
         [Key]
-        [Column("id")]
-        public int Id { get; set; }
+        [Column("idbeneficio")]
+        public int IdBeneficio { get; set; }
 
         [Column("titulo")]
         public string Titulo { get; set; }
@@ -18,18 +18,19 @@ namespace TecApi.Models
         public string Descripcion { get; set; }
 
         [Column("imagen")]
-        public string Imagen { get; set; }
+        public string? Imagen { get; set; }
 
         [Column("url")]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
-        [Column("categoria")]
-        public Categorias Categoria { get; set; }
+        [Column("idcategoriabeneficio")]
+        public int IdCategoriaBeneficio { get; set; }
 
         [Column("fecha")]
         public DateTime Fecha { get; set; }
 
-        [ForeignKey("Categoria")]
-        public Categorias Categorias { get; set; }
+        [ForeignKey("IdCategoriaBeneficio")]
+        public CategoriasBeneficios CategoriaBeneficio { get; set; }
     }
+
 }

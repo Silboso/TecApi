@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using TecApi.Models;
 
 
@@ -16,9 +17,9 @@ namespace TecApi.Context
 
         public DbSet<Carritos> Carrito { get; set; }
 
-        public DbSet<Categorias> Categoria { get; set; }
-
         public DbSet<CategoriasAlimentos> CategoriaAlimento { get; set; }
+
+        public DbSet<CategoriasBeneficios> CategoriaBeneficio { get; set; }
 
         public DbSet<Comentarios> Comentario { get; set; }
 
