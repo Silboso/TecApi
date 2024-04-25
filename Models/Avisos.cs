@@ -17,10 +17,13 @@ namespace TecApi.Models
         public string Contenido { get; set; }
 
         [Column("fechacreacion")]
-        public string FechaCreacion { get; set; }
+        public DateTime FechaCreacion { get; set; }
 
         [Column("idusuario")]
         public int IdUsuario { get; set; }
+
+        [Column("imagen")]
+        public string Imagen { get; set; }
 
         [ForeignKey("IdUsuario")]
         public Usuarios Usuario { get; set; }
