@@ -30,10 +30,10 @@ namespace TecApi.Models
         public string Token { get; set; }
 
         [Column("carrera")]
-        public string Carrera { get; set; }
+        public string? Carrera { get; set; }
 
         [Column("semestre")]
-        public string Semestre { get; set; }
+        public string? Semestre { get; set; }
 
         [Column("sexo")]
         public bool Sexo { get; set; }
