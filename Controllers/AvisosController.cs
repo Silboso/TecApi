@@ -20,7 +20,15 @@ namespace TecApi.Controllers
         [Route("GetAllAvisos")]
         public IEnumerable<Avisos> GetAllAvisos()
         {
-            return _context.Aviso.ToList();
+            return _context.Aviso.Include(a => a.Usuario).ToList();
+        }
+
+        [HttpGet]
+        [Route("GetAvisosId")]
+        public IEnumerable<Avisos> GetAvisosId()
+        {
+            //Solo regresa los id de los avisos
+            return _context.Aviso.Select(a => new Avisos { IdAviso = a.IdAviso }).ToList();
         }
 
         [HttpGet]
