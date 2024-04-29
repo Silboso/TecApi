@@ -61,5 +61,31 @@ namespace TecApi.Controllers
             // Devuelve el alimento creado junto con un código 201 (Created)
             return CreatedAtRoute("GetAlimento", new { id = alimento.IdAlimento }, alimento);
         }
+
+        [HttpGet]
+        [Route("GetAlimentosByCategoria/{id}")]
+        public IActionResult GetAlimentosByCategoria(int id)
+        {
+            // Busca la categoría correspondiente
+            var categoria = _context.CategoriaAlimento.Find(id);
+            if (categoria == null)
+            {
+                // Si la categoría no existe, devuelve un error
+                return NotFound("La categoría especificada no existe.");
+            }
+
+            // Busca los alimentos que pertenecen a la categoría
+            var alimentos = _context.Alimento.Where(a => a.IdCategoria == id).ToList();
+            return Ok(alimentos);
+        }
+
+        [HttpGet]
+        [Route("GetAlimentosBeLike/{nombre}")]
+        public IActionResult GetAlimentosBeLike(string nombre)
+        {
+            // Busca los alimentos que contienen el nombre especificado
+            var alimentos = _context.Alimento.Where(a => a.Nombre.Contains(nombre)).ToList();
+            return Ok(alimentos);
+        }
     }
 }
