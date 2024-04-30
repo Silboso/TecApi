@@ -117,7 +117,8 @@ CREATE TABLE FAQ (
 
 -- Creacion de la tabla 'Conductores'
 CREATE TABLE Conductores (
-    IDConductor INT PRIMARY KEY,
+    IDConductor Serial PRIMARY KEY,
+    NoTelefono VARCHAR(20),
     IdUsuario INT,
     Status BOOLEAN,
     FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario)
@@ -125,7 +126,7 @@ CREATE TABLE Conductores (
 
 -- Creacion de la tabla 'Directorio'
 CREATE TABLE Directorio (
-    IDDirectorio INT PRIMARY KEY,
+    IDDirectorio Serial PRIMARY KEY,
     IdUsuario INT,
     MarcaA VARCHAR(30),
     ModeloA VARCHAR(50),
@@ -136,7 +137,7 @@ CREATE TABLE Directorio (
 
 -- Creacion de la tabla 'Horario'
 CREATE TABLE Horario (
-    IDHorario INT PRIMARY KEY,
+    IDHorario Serial PRIMARY KEY,
     IDDirectorio INT,
     Dia VARCHAR(9),
     HSalida TIME,
@@ -146,7 +147,7 @@ CREATE TABLE Horario (
 
 -- Creacion de la tabla 'Pines'
 CREATE TABLE Pines (
-    IDPin INT PRIMARY KEY,
+    IDPin Serial PRIMARY KEY,
     IDDirectorio INT,
     CoordenadaX VARCHAR(200),
     CoordenadaY VARCHAR(200),
