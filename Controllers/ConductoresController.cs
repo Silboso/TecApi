@@ -22,5 +22,8 @@ namespace TecApi.Controllers
         {
             return _context.Conductor.ToList();
         }
+
+        
+
     }
 }
