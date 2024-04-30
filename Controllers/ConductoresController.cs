@@ -20,7 +20,7 @@ namespace TecApi.Controllers
         [Route("GetAllConductores")]
         public IEnumerable<Conductores> GetAllConductores()
         {
-            return _context.Conductor.ToList();
+            return _context.Conductor.Include(x => x.Usuario).ToList();
         }
 
         

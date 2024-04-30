@@ -10,6 +10,8 @@ namespace TecApi.Models
         [Column("idconductor")]
         public int IdConductor { get; set; }
 
+        [Column("notelefono")]
+        public string NoTelefono { get; set; }
         [Column("idusuario")]
         public int IdUsuario { get; set; }
 
