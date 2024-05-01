@@ -15,10 +15,24 @@ namespace TecApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllValoraciones")]
-        public IEnumerable<Valoraciones> GetAllValoraciones()
+        [Route("GetValoracion/{id}", Name = "GetValoracion")]
+        public IActionResult GetValoracionByID(int id)
         {
-            return _context.Valoracion.ToList();
+            var valoracion = _context.Valoracion.FirstOrDefault(v => v.IdValoracion == id);
+            if (valoracion == null)
+            {
+                return NotFound();
+            }
+            return Ok(valoracion);
+        }
+
+        [HttpPost]
+        [Route("AddValoracion")]
+        public IActionResult AddValoracion(Valoraciones valoracion)
+        {
+            _context.Valoracion.Add(valoracion);
+            _context.SaveChanges();
+            return Ok(valoracion);
         }
     }
 }

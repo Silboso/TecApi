@@ -75,15 +75,38 @@ namespace TecApi.Controllers
             }
 
             // Actualiza los campos del alimento
+            alimentoActual.Url = alimento.Url;
             alimentoActual.Nombre = alimento.Nombre;
             alimentoActual.Precio = alimento.Precio;
+            alimentoActual.Descripcion = alimento.Descripcion;
             alimentoActual.IdCategoria = alimento.IdCategoria;
+
 
             // Guarda los cambios
             _context.SaveChanges();
 
             // Devuelve el alimento actualizado
             return Ok(alimentoActual);
+        }
+
+        [HttpDelete]
+        [Route("DeleteAlimento/{id}")]
+        public IActionResult DeleteAlimento(int id)
+        {
+            // Busca el alimento correspondiente
+            var alimento = _context.Alimento.Find(id);
+            if (alimento == null)
+            {
+                // Si el alimento no existe, devuelve un error
+                return NotFound();
+            }
+
+            // Elimina el alimento del contexto y guarda los cambios
+            _context.Alimento.Remove(alimento);
+            _context.SaveChanges();
+
+            // Devuelve un mensaje de éxito
+            return Ok("Alimento eliminado");
         }
 
         [HttpGet]
