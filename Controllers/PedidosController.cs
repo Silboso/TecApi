@@ -27,16 +27,17 @@ namespace TecApi.Controllers
         [Route("GetPedido/{userId}", Name = "GetPedidoByUserId")]
         public IActionResult GetPedidoByUserID(int userId)
         {
-            var pedidos = _context.PedidoEncabezado
-                                  .Include(p => p.Usuario)
-                                  .Where(p => p.IdUsuario == userId).ToList();
+            var pedido = _context.PedidoEncabezado
+                                 .Include(p => p.Usuario)
+                                 .FirstOrDefault(p => p.IdUsuario == userId);
 
-            if (!pedidos.Any())
+            if (pedido == null)
             {
-                return NotFound();
+                return NotFound($"No se encontró un pedido para el usuario con ID {userId}.");
             }
-            return Ok(pedidos);
+            return Ok(pedido);
         }
+
 
 
         [HttpPost]
@@ -76,23 +77,7 @@ namespace TecApi.Controllers
             _context.SaveChanges();
             return Ok(pedido);
         }
-    
 
-        [HttpGet]
-        [Route("GetPedidoDetalle/{id}", Name = "GetPedidoDetalle")]
-        public IActionResult GetPedidoDetalleByID(int id)
-        {
-            // Usar Where para obtener todos los detalles relacionados con el ID de pedido
-            var pedidoDetalle = _context.PedidoDetalle
-                                        .Include(p => p.Alimento)
-                                        .Where(p => p.IdPedido == id).ToList();
-
-            if (pedidoDetalle == null || !pedidoDetalle.Any())
-            {
-                return NotFound();
-            }
-            return Ok(pedidoDetalle);
-        }
 
         [HttpPost]
         [Route("AddPedidoDetalle")]
@@ -114,6 +99,23 @@ namespace TecApi.Controllers
             _context.SaveChanges();
             return Ok(pedidoDetalle);
         }
+
+        [HttpGet]
+        [Route("GetDetallePedido/{IdPedido}")]
+        public IActionResult GetDetallePedido(int IdPedido)
+        {
+            var detalles = _context.PedidoDetalle
+                                  .Include(pd => pd.Alimento)
+                                  .Where(pd => pd.IdPedido == IdPedido)
+                                  .ToList();
+
+            if (detalles.Count == 0)
+            {
+                return NotFound($"No se encontraron detalles para el pedido con ID {IdPedido}.");
+            }
+            return Ok(detalles);
+        }
+
 
     }
 }
