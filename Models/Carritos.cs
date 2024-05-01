@@ -7,16 +7,14 @@ namespace TecApi.Models
     public class Carritos
     {
         [Key]
-        [Column("idusuario")]
-        public int IdUsuario { get; set; }
+        [Column("idCarrito")]
+        public int IdCarrito { get; set; }
 
-        [Column("idalimento")]
-        public int IdAlimento { get; set; }
+        [Column("idUsuario")]
+        public int IdUsuario { get; set; }
 
         [ForeignKey("IdUsuario")]
         public Usuarios Usuario { get; set; }
 
-        [ForeignKey("IdAlimento")]
-        public Alimentos Alimento { get; set; }
     }
 }

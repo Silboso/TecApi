@@ -28,11 +28,32 @@ namespace TecApi.Controllers
 
         [HttpPost]
         [Route("AddValoracion")]
-        public IActionResult AddValoracion(Valoraciones valoracion)
+        public IActionResult AddValoracion([FromBody] Valoraciones valoracion)
         {
+            if (valoracion == null)
+            {
+                return BadRequest("El objeto de valoración no puede ser nulo.");
+            }
+
+            // Asegurarse de que Entity Framework no intente procesar la entidad Usuario como una nueva inserción
+            if (valoracion.IdUsuario != 0)
+            {
+                _context.Entry(_context.Usuario.Find(valoracion.IdUsuario)).State = EntityState.Unchanged;
+            }
+
+            // Verificar si el alimento existe
+            var alimento = _context.Alimento.Find(valoracion.IdAlimento);
+            if (alimento == null)
+            {
+                return BadRequest($"No existe un alimento con el ID {valoracion.IdAlimento}.");
+            }
+
             _context.Valoracion.Add(valoracion);
             _context.SaveChanges();
             return Ok(valoracion);
         }
+
+
+
     }
 }

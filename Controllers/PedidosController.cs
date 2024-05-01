@@ -24,21 +24,31 @@ namespace TecApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetPedido/{id}", Name = "GetPedido")]
-        public IActionResult GetPedidoByID(int id)
+        [Route("GetPedido/{userId}", Name = "GetPedidoByUserId")]
+        public IActionResult GetPedidoByUserID(int userId)
         {
-            var pedido = _context.PedidoEncabezado.Include(p => p.Usuario).FirstOrDefault(p => p.IdPedido == id);
-            if (pedido == null)
+            var pedidos = _context.PedidoEncabezado
+                                  .Include(p => p.Usuario)
+                                  .Where(p => p.IdUsuario == userId).ToList();
+
+            if (!pedidos.Any())
             {
                 return NotFound();
             }
-            return Ok(pedido);
+            return Ok(pedidos);
         }
+
 
         [HttpPost]
         [Route("AddPedido")]
         public IActionResult AddPedido(PedidosEncabezados pedido)
         {
+            // Asegurarse de que Entity Framework conoce que el usuario no debe ser creado
+            if (pedido.Usuario != null && pedido.Usuario.IdUsuario > 0)
+            {
+                _context.Entry(pedido.Usuario).State = EntityState.Unchanged;
+            }
+
             _context.PedidoEncabezado.Add(pedido);
             _context.SaveChanges();
             return Ok(pedido);
@@ -46,23 +56,38 @@ namespace TecApi.Controllers
 
         [HttpPut]
         [Route("UpdatePedido/{id}")]
-        public IActionResult UpdatePedido(int id, PedidosEncabezados pedido)
+        public IActionResult UpdatePedido(int id, PedidosEncabezados pedidoModificado)
         {
-            if (id != pedido.IdPedido)
+            var pedido = _context.PedidoEncabezado.FirstOrDefault(p => p.IdPedido == id);
+
+            if (pedido == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            _context.Entry(pedido).State = EntityState.Modified;
+
+            if (id != pedidoModificado.IdPedido)
+            {
+                return BadRequest("El ID del pedido no coincide con el ID en la URL.");
+            }
+
+            // Actualizar solo el campo de estatus
+            pedido.Estatus = pedidoModificado.Estatus;
+
             _context.SaveChanges();
             return Ok(pedido);
         }
+    
 
         [HttpGet]
         [Route("GetPedidoDetalle/{id}", Name = "GetPedidoDetalle")]
         public IActionResult GetPedidoDetalleByID(int id)
         {
-            var pedidoDetalle = _context.PedidoDetalle.Include(p => p.Alimento).FirstOrDefault(p => p.IdPedido == id);
-            if (pedidoDetalle == null)
+            // Usar Where para obtener todos los detalles relacionados con el ID de pedido
+            var pedidoDetalle = _context.PedidoDetalle
+                                        .Include(p => p.Alimento)
+                                        .Where(p => p.IdPedido == id).ToList();
+
+            if (pedidoDetalle == null || !pedidoDetalle.Any())
             {
                 return NotFound();
             }
@@ -73,9 +98,22 @@ namespace TecApi.Controllers
         [Route("AddPedidoDetalle")]
         public IActionResult AddPedidoDetalle(PedidosDetalles pedidoDetalle)
         {
+            // Marcar el alimento como no modificado para evitar que EF intente crear uno nuevo
+            if (pedidoDetalle.Alimento != null && pedidoDetalle.Alimento.IdAlimento > 0)
+            {
+                _context.Entry(pedidoDetalle.Alimento).State = EntityState.Unchanged;
+            }
+
+            // Opcional: si también estás pasando el objeto Pedido y no quieres crear uno nuevo
+            if (pedidoDetalle.Pedido != null && pedidoDetalle.Pedido.IdPedido > 0)
+            {
+                _context.Entry(pedidoDetalle.Pedido).State = EntityState.Unchanged;
+            }
+
             _context.PedidoDetalle.Add(pedidoDetalle);
             _context.SaveChanges();
             return Ok(pedidoDetalle);
         }
+
     }
 }
