@@ -62,6 +62,30 @@ namespace TecApi.Controllers
             return CreatedAtRoute("GetAlimento", new { id = alimento.IdAlimento }, alimento);
         }
 
+        [HttpPut]
+        [Route("PutAlimento/{id}")]
+        public IActionResult PutAlimento(int id, Alimentos alimento)
+        {
+            // Busca el alimento correspondiente
+            var alimentoActual = _context.Alimento.Find(id);
+            if (alimentoActual == null)
+            {
+                // Si el alimento no existe, devuelve un error
+                return NotFound();
+            }
+
+            // Actualiza los campos del alimento
+            alimentoActual.Nombre = alimento.Nombre;
+            alimentoActual.Precio = alimento.Precio;
+            alimentoActual.IdCategoria = alimento.IdCategoria;
+
+            // Guarda los cambios
+            _context.SaveChanges();
+
+            // Devuelve el alimento actualizado
+            return Ok(alimentoActual);
+        }
+
         [HttpGet]
         [Route("GetAlimentosByCategoria/{id}")]
         public IActionResult GetAlimentosByCategoria(int id)
@@ -73,7 +97,6 @@ namespace TecApi.Controllers
                 // Si la categoría no existe, devuelve un error
                 return NotFound("La categoría especificada no existe.");
             }
-
             // Busca los alimentos que pertenecen a la categoría
             var alimentos = _context.Alimento.Where(a => a.IdCategoria == id).ToList();
             return Ok(alimentos);
@@ -86,6 +109,26 @@ namespace TecApi.Controllers
             // Busca los alimentos que contienen el nombre especificado
             var alimentos = _context.Alimento.Where(a => a.Nombre.Contains(nombre)).ToList();
             return Ok(alimentos);
+        }
+
+        [HttpPost]
+        [Route("PostCategoria")]
+        public IActionResult PostCategoria(CategoriasAlimentos categoria)
+        {
+            // Agrega la categoría al contexto y guarda los cambios
+            _context.CategoriaAlimento.Add(categoria); // Cambio aquí
+            _context.SaveChanges();
+
+            // Devuelve la categoría creada junto con un código 201 (Created)
+            return Ok(categoria);
+        }
+
+        [HttpGet]
+        [Route("GetAllCategorias")]
+        public IEnumerable<CategoriasAlimentos> GetAllCategorias()
+        {
+            // Devuelve todas las categorías
+            return _context.CategoriaAlimento.ToList();
         }
     }
 }

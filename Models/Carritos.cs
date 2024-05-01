@@ -13,12 +13,6 @@ namespace TecApi.Models
         [Column("idalimento")]
         public int IdAlimento { get; set; }
 
-        [Column("cantidad")]
-        public int Cantidad { get; set; }
-
-        [Column("total")]
-        public decimal Total { get; set; }
-
         [ForeignKey("IdUsuario")]
         public Usuarios Usuario { get; set; }
 
