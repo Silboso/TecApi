@@ -12,13 +12,13 @@ namespace TecApi.Models
         [Column("idusuario")]
         public int IdUsuario { get; set; }
 
-        [Column("marca")]
+        [Column("marcaa")]
         public string Marca { get; set; }
 
-        [Column("modelo")]
+        [Column("modeloa")]
         public string Modelo { get; set; }
 
-        [Column("color")]
+        [Column("colora")]
         public string Color { get; set; }
 
         [Column("status")]

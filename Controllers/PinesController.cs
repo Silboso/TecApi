@@ -20,7 +20,24 @@ namespace TecApi.Controllers
         [Route("GetAllPines")]
         public IEnumerable<Pines> GetAllPines()
         {
-            return _context.Pin.ToList();
+            return _context.Pin.Include(x => x.Directorio).ToList();
+        }
+
+        //Lo usare para VSCODE
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Pines>> GetPines(int id)
+        {
+            var pines = await _context.Pin
+                .Include(c => c.Directorio)
+
+                .FirstOrDefaultAsync(c => c.IdPin == id);
+
+            if (pines == null)
+            {
+                return NotFound();
+            }
+
+            return pines;
         }
     }
 }

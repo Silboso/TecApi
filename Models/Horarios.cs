@@ -17,10 +17,10 @@ namespace TecApi.Models
         public string Dia { get; set; }
 
         [Column("hsalida")]
-        public string HSalida { get; set; }
+        public TimeSpan HSalida { get; set; }
 
         [Column("hregreso")]
-        public string HRegreso { get; set; }
+        public TimeSpan HRegreso { get; set; }
 
         [ForeignKey("IdDirectorio")]
         public Directorios Directorio { get; set; }
