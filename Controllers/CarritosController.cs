@@ -27,14 +27,19 @@ namespace TecApi.Controllers
             }
             return Ok(carrito);
         }
-
         [HttpPost]
         [Route("AddCarrito")]
         public async Task<ActionResult<Carritos>> AddCarrito(Carritos carrito)
         {
+
+            carrito.Usuario = null;
+
             _context.Carrito.Add(carrito);
+
             await _context.SaveChangesAsync();
+
             return Ok(carrito);
         }
+
     }
 }

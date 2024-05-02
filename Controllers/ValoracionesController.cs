@@ -15,16 +15,17 @@ namespace TecApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetValoracion/{id}", Name = "GetValoracion")]
-        public IActionResult GetValoracionByID(int id)
+        [Route("GetValoracion/{idAlimento}", Name = "GetValoracion")]
+        public IActionResult GetValoracionByAlimentoID(int idAlimento)
         {
-            var valoracion = _context.Valoracion.FirstOrDefault(v => v.IdValoracion == id);
-            if (valoracion == null)
+            var valoraciones = _context.Valoracion.Where(v => v.IdAlimento == idAlimento).ToList();
+            if (valoraciones.Count == 0)
             {
                 return NotFound();
             }
-            return Ok(valoracion);
+            return Ok(valoraciones);
         }
+
 
         [HttpPost]
         [Route("AddValoracion")]
@@ -36,9 +37,9 @@ namespace TecApi.Controllers
             }
 
             // Asegurarse de que Entity Framework no intente procesar la entidad Usuario como una nueva inserción
-            if (valoracion.IdUsuario != 0)
+            if (valoracion.Usuario != null && valoracion.Usuario.IdUsuario != 0)
             {
-                _context.Entry(_context.Usuario.Find(valoracion.IdUsuario)).State = EntityState.Unchanged;
+                _context.Entry(valoracion.Usuario).State = EntityState.Unchanged;
             }
 
             // Verificar si el alimento existe
@@ -52,6 +53,7 @@ namespace TecApi.Controllers
             _context.SaveChanges();
             return Ok(valoracion);
         }
+
 
 
 
