@@ -17,6 +17,8 @@ namespace TecApi.Context
 
         public DbSet<Carritos> Carrito { get; set; }
 
+        public DbSet<CarritoDetalle> CarritoDetalle { get; set; }
+
         public DbSet<CategoriasAlimentos> CategoriaAlimento { get; set; }
 
         public DbSet<CategoriasBeneficios> CategoriaBeneficio { get; set; }

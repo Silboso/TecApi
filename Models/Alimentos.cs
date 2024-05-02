@@ -25,6 +25,9 @@ namespace TecApi.Models
         [Column("nombre")]
         public string Nombre { get; set; }
 
+        [Column("estado")]
+        public bool Estado { get; set; }
+
         [ForeignKey("IdCategoria")]
         public CategoriasAlimentos Categoria { get; set; }
     }

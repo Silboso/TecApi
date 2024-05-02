@@ -17,13 +17,6 @@ namespace TecApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllCarritos")]
-        public IEnumerable<Carritos> GetAllCarritos()
-        {
-            return _context.Carrito.Include(c => c.Alimento).ToList();
-        }
-
-        [HttpGet]
         [Route("GetCarrito/{id}")]
         public async Task<ActionResult<Carritos>> GetCarrito(int id)
         {
@@ -35,13 +28,13 @@ namespace TecApi.Controllers
             return Ok(carrito);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("AddCarrito")]
         public async Task<ActionResult<Carritos>> AddCarrito(Carritos carrito)
         {
             _context.Carrito.Add(carrito);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetCarrito", new { id = carrito.IdUsuario }, carrito);
+            return Ok(carrito);
         }
     }
 }
