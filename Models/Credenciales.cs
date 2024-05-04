@@ -13,7 +13,7 @@ namespace TecApi.Models
     public class Credenciales
     {
         [Key]
-        [Column("id")]
+        [Column("idcredencial")]
         public int Id { get; set; }
 
         [Column("idusuario")]
