@@ -84,11 +84,21 @@ namespace TecApi.Controllers
             }
 
             int añoActual = DateTime.Now.Year;
-            //int secuencia = SecuenciasSerial(añoActual); // Aún no se cómo mantener las secuencias
-            int secuencia = 1;
+            int secuencia = SecuenciasSerial(añoActual) + 1;
 
             string serial = GenerarIdentificador(usuario, añoActual, secuencia);
-            return Ok(new { Serial = serial });
+
+            var credencial = new Credenciales
+            {
+                IdUsuario = id,
+                Serial = serial,
+                Usuario = usuario
+            };
+
+            _context.Credencial.Add(credencial);
+            _context.SaveChanges();
+
+            return CreatedAtAction(nameof(CredencialesController.GetCredencialByIdWithUser), "Credenciales", new { id = credencial.Id }, credencial);//es el metodo de credenciales
         }
 
         private string GenerarIdentificador(Usuarios usuario, int año, int secuencia)
@@ -101,16 +111,38 @@ namespace TecApi.Controllers
             char primerNombreInicial = !string.IsNullOrEmpty(nombres[0]) ? nombres[0].ToUpper()[0] : 'X';
             char segundoNombreInicial = nombres.Length > 1 && !string.IsNullOrEmpty(nombres[1]) ? nombres[1].ToUpper()[0] : 'X';
             string secuenciaStr = secuencia.ToString("D3");
-            string rolStr = usuario.Rol.ToString().Length >= 3 ? usuario.Rol.ToString().ToUpper().Substring(0, 3) : "ROL";
+            string rolStr = usuario.Rol.ToString().ToUpper();  // Convertir el nombre del rol a mayúsculas
+            rolStr = rolStr.Length >= 3 ? rolStr.Substring(0, 3) : rolStr.PadRight(3, 'X');  // Tomar solo las primeras 3 letras, llenar con 'X' si es necesario
 
             return $"{carrera}{añoStr}{primerApellidoInicial}{segundoApellidoInicial}{primerNombreInicial}{segundoNombreInicial}{secuenciaStr}{rolStr}";
         }
 
         private int SecuenciasSerial(int year)
         {
-            // Implementar la lógica para obtener la siguiente secuencia
-            // Esto podría implicar acceder a una tabla de la base de datos que mantenga el recuento de las secuencias por año
-            return 1; // Valor temporal, implementar la lógica adecuada
+            var yearStr = year.ToString("D4");
+            var serialesDelAño = _context.Credencial
+                .Where(c => c.Serial.Contains(yearStr))
+                .Select(c => c.Serial)
+                .ToList();
+
+            int maxSecuencia = 0;
+            foreach (var serial in serialesDelAño)
+            {
+                // Asumiendo que el formato del serial incluye la secuencia como los tres dígitos antes del rol
+                int index = serial.IndexOf(yearStr) + 8; // 'Carrera(3)' + 'Año(4)' + 'Inicial(1)'
+                if (index + 3 <= serial.Length)
+                {
+                    string secuenciaStr = serial.Substring(index, 3);
+                    if (int.TryParse(secuenciaStr, out int secuencia))
+                    {
+                        if (secuencia > maxSecuencia)
+                        {
+                            maxSecuencia = secuencia;
+                        }
+                    }
+                }
+            }
+            return maxSecuencia;
         }
         //LMAO
     }
