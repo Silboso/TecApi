@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 using TecApi.Context;
 using TecApi.Models;
 
@@ -16,21 +17,46 @@ namespace TecApi.Controllers
             _context = context;
         }
 
+        //[HttpGet]
+        //[Route("GetAllDirectorios")]
+        //public IEnumerable<Directorios> GetAllDirectorios()
+        //{
+        //    return _context.Directorio.Include(x => x.Usuario).ToList();
+        //}
+
         [HttpGet]
         [Route("GetAllDirectorios")]
-        public IEnumerable<Directorios> GetAllDirectorios()
+        public IActionResult GetAllDirectorios()
         {
-            return _context.Directorio.Include(x => x.Usuario).ToList();
+            var directorios = _context.Directorio
+                .Include(c => c.Usuario)
+                .ToList();
+
+            if (!directorios.Any())
+            {
+                return NotFound("No se encontraron directorios.");
+            }
+
+            return Ok(directorios);
         }
+
+
+
 
         [HttpPost]
         [Route("AddDirectorio")]
-        public IActionResult AddDirectorio(Directorios directorio)
+        public IActionResult AddDirectorio([FromBody] Directorios directorio)
         {
+            if (directorio == null)
+            {
+                return BadRequest("El directorio es nulo");
+            }
+
             _context.Directorio.Add(directorio);
             _context.SaveChanges();
             return Ok();
         }
+
 
         //Lo usare para VSCODE
         [HttpGet("{id}")]
@@ -48,6 +74,31 @@ namespace TecApi.Controllers
 
             return directorio;
         }
+
+
+
+        [HttpPost]
+        [Route("AddDirectorioss")]
+        public IActionResult AddDirectorioss([FromBody] Directorios directorio)
+        {
+            if (directorio == null)
+            {
+                return BadRequest("El directorio es nulo");
+            }
+
+            _context.Directorio.Add(directorio);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+
+
+
     }
+
+
+
+
+
 
 }

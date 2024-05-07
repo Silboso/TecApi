@@ -16,12 +16,34 @@ namespace TecApi.Controllers
             _context = context;
         }
 
+        //[HttpGet]
+        //[Route("GetAllPines")]
+        //public IEnumerable<Pines> GetAllPines()
+        //{
+        //    return _context.Pin.Include(x => x.Directorio).ToList();
+        //}
+
+
+
         [HttpGet]
         [Route("GetAllPines")]
-        public IEnumerable<Pines> GetAllPines()
+        public IActionResult GetAllPines()
         {
-            return _context.Pin.Include(x => x.Directorio).ToList();
+            var pines = _context.Pin
+                .Include(c => c.Directorio)
+                .ToList();
+
+            if (!pines.Any())
+            {
+                return NotFound("No se encontraron pines.");
+            }
+
+            return Ok(pines);
         }
+
+
+
+
 
         //Lo usare para VSCODE
         [HttpGet("{id}")]
@@ -38,6 +60,21 @@ namespace TecApi.Controllers
             }
 
             return pines;
+        }
+
+        //Agregar Pin
+        [HttpPost]
+        [Route("AddPin")]
+        public IActionResult AddPin([FromBody] Pines pin)
+        {
+            if (pin == null)
+            {
+                return BadRequest("El pin es nulo");
+            }
+
+            _context.Pin.Add(pin);
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }
