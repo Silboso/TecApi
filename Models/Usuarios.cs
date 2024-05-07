@@ -12,22 +12,22 @@ namespace TecApi.Models
         public int IdUsuario { get; set; }
 
         [Column("foto")]
-        public string Foto { get; set; }
+        public string? Foto { get; set; }
 
         [Column("nombre")]
-        public string Nombre { get; set; }
+        public string? Nombre { get; set; }
 
         [Column("apellidopaterno")]
-        public string ApellidoPaterno { get; set; }
+        public string? ApellidoPaterno { get; set; }
 
         [Column("apellidomaterno")]
-        public string ApellidoMaterno { get; set; }
+        public string? ApellidoMaterno { get; set; }
 
         [Column("matricula")]
-        public int Matricula { get; set; }
+        public int? Matricula { get; set; }
 
         [Column("token")]
-        public string Token { get; set; }
+        public string? Token { get; set; }
 
         [Column("carrera")]
         public string? Carrera { get; set; }
@@ -36,10 +36,10 @@ namespace TecApi.Models
         public string? Semestre { get; set; }
 
         [Column("sexo")]
-        public bool Sexo { get; set; }
+        public bool? Sexo { get; set; }
 
         [Column("rol")]
-        public RolUsuario Rol { get; set; }
+        public RolUsuario? Rol { get; set; }
     }
 
     public enum RolUsuario

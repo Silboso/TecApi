@@ -30,7 +30,7 @@ namespace TecApi.Models
         public DateTime Fecha { get; set; }
 
         [ForeignKey("IdCategoriaBeneficio")]
-        public CategoriasBeneficios CategoriaBeneficio { get; set; }
+        public CategoriasBeneficios? CategoriaBeneficio { get; set; }
     }
 
 }
