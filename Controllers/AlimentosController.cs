@@ -63,7 +63,7 @@ namespace TecApi.Controllers
         }
 
         [HttpPost]
-        [Route("PostAlimento")]
+        [Route("z")]
         public IActionResult PostAlimento(Alimentos alimento)
         {
             // Antes de agregar el alimento, busca la categoría correspondiente por su ID
