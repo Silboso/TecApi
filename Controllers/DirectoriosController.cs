@@ -32,6 +32,13 @@ namespace TecApi.Controllers
                 .Include(c => c.Usuario)
                 .ToList();
 
+            //Cambia el token a null
+
+            foreach (var directorio in directorios)
+            {
+                directorio.Usuario.Token = null;
+            }
+
             if (!directorios.Any())
             {
                 return NotFound("No se encontraron directorios.");

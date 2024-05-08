@@ -29,7 +29,9 @@ namespace TecApi.Controllers
         {
             var horarios = _context.Horario
                 .Include(c => c.Directorio)
+                
                 .ToList();
+           
 
             if (!horarios.Any())
             {

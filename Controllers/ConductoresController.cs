@@ -81,12 +81,31 @@ namespace TecApi.Controllers
 
         [HttpPost]
         [Route("AddConductor")]
-        public IActionResult AddConductor(Conductores conductor)
+        public IActionResult AddConductor([FromBody] Conductores conductor)
         {
-            _context.Conductor.Add(conductor);
-            _context.SaveChanges();
-            return Ok();
+            // Asegurarse de que el usuario existe
+            var usuarioExistente = _context.Usuario.FirstOrDefault(u => u.IdUsuario == conductor.IdUsuario);
+            if (usuarioExistente == null)
+            {
+                return BadRequest("Usuario no existe");
+            }
+
+            try
+            {
+                conductor.Usuario = usuarioExistente;  // Asociar el usuario existente al nuevo conductor
+                _context.Conductor.Add(conductor);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al agregar el conductor: " + ex.Message);
+            }
         }
+
+
+
+
 
 
 
@@ -114,14 +133,29 @@ namespace TecApi.Controllers
                 })
                 .ToListAsync();
 
+
             if (conductores == null || !conductores.Any())
             {
                 return NotFound("No se encontraron conductores con información completa.");
             }
-
             return Ok(conductores);
         }
 
+
+        //Metodo para agregar conductores de manera correcta
+        [HttpPost]
+        [Route("AddConductorDetails")]
+        public async Task<IActionResult> AddConductorDetails([FromBody] Conductores conductor)
+        {
+            if (conductor == null)
+            {
+                return BadRequest("El conductor es nulo");
+            }
+
+            _context.Conductor.Add(conductor);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
 
     }
