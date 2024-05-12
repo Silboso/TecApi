@@ -84,6 +84,7 @@ namespace TecApi.Controllers
         {
             var carritoDetalles = await _context.CarritoDetalle
                                                 .Where(cd => cd.IdCarrito == carritoId)
+                                                .Include(cd => cd.Alimento)  // Asegura que también se cargue el alimento
                                                 .ToListAsync();
 
             if (carritoDetalles == null || carritoDetalles.Count == 0)
