@@ -48,6 +48,14 @@ namespace TecApi.Context
         public DbSet<Usuarios> Usuario { get; set; }
 
         public TecApiContext(DbContextOptions<TecApiContext> options) : base(options) { }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configure the Credenciales entity to have a unique Serial
+            modelBuilder.Entity<Credenciales>()
+                .HasIndex(c => c.Serial)
+                .IsUnique();
+        }
 
     }
 }

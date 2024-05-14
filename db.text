@@ -173,8 +173,8 @@ CREATE TABLE Beneficios (
 );
 
 CREATE TABLE Credenciales (
-    Id INT NOT NULL,
-    IdUsuario INT NOT NULL REFERENCES Usuarios(IdUsuario),
+    IdCredencial SERIAL PRIMARY KEY,
+    IdUsuario INT NOT NULL REFERENCES Usuarios(Idusuario),
     Serial VARCHAR(255) NOT NULL UNIQUE
 );
 
