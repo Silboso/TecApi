@@ -103,6 +103,7 @@ namespace TecApi.Controllers
             alimentoActual.Precio = alimento.Precio;
             alimentoActual.Descripcion = alimento.Descripcion;
             alimentoActual.IdCategoria = alimento.IdCategoria;
+            alimentoActual.Estado = alimento.Estado;
 
 
             // Guarda los cambios

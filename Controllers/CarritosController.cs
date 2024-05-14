@@ -77,20 +77,20 @@ namespace TecApi.Controllers
             }
         }
 
-[HttpDelete]
-[Route("DeleteCarritoDetalle/{idDetalle}")]
-public async Task<ActionResult> DeleteCarritoDetalle(int idDetalle)
-{
-    var detalleCarrito = await _context.CarritoDetalle.FindAsync(idDetalle);
-    if (detalleCarrito == null)
-    {
-        return NotFound($"Detalle de carrito con ID {idDetalle} no encontrado.");
-    }
+        [HttpDelete]
+        [Route("DeleteAllCarritoDetalle/{idCarrito}")]
+        public async Task<ActionResult> DeleteAllCarritoDetalle(int idCarrito)
+        {
+            var detallesCarrito = await _context.CarritoDetalle.Where(cd => cd.IdCarrito == idCarrito).ToListAsync();
+            if (!detallesCarrito.Any())
+            {
+                return NotFound($"No se encontraron detalles para el carrito con ID {idCarrito}.");
+            }
 
-    _context.CarritoDetalle.Remove(detalleCarrito);
-    await _context.SaveChangesAsync();
-    return Ok($"Detalle de carrito con ID {idDetalle} eliminado correctamente.");
-}
+            _context.CarritoDetalle.RemoveRange(detallesCarrito);
+            await _context.SaveChangesAsync();
+            return Ok($"Todos los detalles del carrito con ID {idCarrito} han sido eliminados correctamente.");
+        }
 
 
 
