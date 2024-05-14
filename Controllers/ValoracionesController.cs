@@ -5,6 +5,8 @@ using TecApi.Models;
 
 namespace TecApi.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class ValoracionesController : ControllerBase
     {
         private readonly TecApiContext _context;
@@ -15,16 +17,23 @@ namespace TecApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetValoracion/{id}", Name = "GetValoracion")]
-        public IActionResult GetValoracionByID(int id)
+        [Route("GetValoracion/{idAlimento}", Name = "GetValoracion")]
+        public IActionResult GetValoracionByAlimentoID(int idAlimento)
         {
-            var valoracion = _context.Valoracion.FirstOrDefault(v => v.IdValoracion == id);
-            if (valoracion == null)
+            // Incluye el usuario en la consulta
+            var valoraciones = _context.Valoracion
+                                       .Where(v => v.IdAlimento == idAlimento)
+                                       .Include(v => v.Usuario) // Asegúrate de tener una propiedad Usuario en tu modelo de Valoracion
+                                       .ToList();
+
+            if (!valoraciones.Any()) // Usar Any() es más eficiente que contar los elementos
             {
                 return NotFound();
             }
-            return Ok(valoracion);
+
+            return Ok(valoraciones);
         }
+
 
         [HttpPost]
         [Route("AddValoracion")]
@@ -35,23 +44,31 @@ namespace TecApi.Controllers
                 return BadRequest("El objeto de valoración no puede ser nulo.");
             }
 
-            // Asegurarse de que Entity Framework no intente procesar la entidad Usuario como una nueva inserción
-            if (valoracion.IdUsuario != 0)
+            // Verificar que el usuario y el alimento existen en la base de datos
+            var usuarioExistente = _context.Usuario.Find(valoracion.Usuario.IdUsuario);
+            var alimentoExistente = _context.Alimento.Find(valoracion.Alimento.IdAlimento);
+
+            // Verificar si el usuario y el alimento existen
+            if (usuarioExistente == null)
             {
-                _context.Entry(_context.Usuario.Find(valoracion.IdUsuario)).State = EntityState.Unchanged;
+                return BadRequest($"No existe un usuario con el ID {valoracion.Usuario.IdUsuario}.");
             }
 
-            // Verificar si el alimento existe
-            var alimento = _context.Alimento.Find(valoracion.IdAlimento);
-            if (alimento == null)
+            if (alimentoExistente == null)
             {
-                return BadRequest($"No existe un alimento con el ID {valoracion.IdAlimento}.");
+                return BadRequest($"No existe un alimento con el ID {valoracion.Alimento.IdAlimento}.");
             }
+
+            // Asociar las referencias existentes con la valoración
+            valoracion.Usuario = usuarioExistente;
+            valoracion.Alimento = alimentoExistente;
 
             _context.Valoracion.Add(valoracion);
             _context.SaveChanges();
             return Ok(valoracion);
         }
+
+
 
 
 

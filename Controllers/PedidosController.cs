@@ -27,16 +27,18 @@ namespace TecApi.Controllers
         [Route("GetPedido/{userId}", Name = "GetPedidoByUserId")]
         public IActionResult GetPedidoByUserID(int userId)
         {
-            var pedido = _context.PedidoEncabezado
-                                 .Include(p => p.Usuario)
-                                 .FirstOrDefault(p => p.IdUsuario == userId);
+            var pedidos = _context.PedidoEncabezado
+                                   .Include(p => p.Usuario)
+                                   .Where(p => p.IdUsuario == userId)
+                                   .ToList();  // Convierte el resultado en una lista
 
-            if (pedido == null)
+            if (!pedidos.Any())  // Verifica si la lista está vacía
             {
-                return NotFound($"No se encontró un pedido para el usuario con ID {userId}.");
+                return NotFound($"No se encontraron pedidos para el usuario con ID {userId}.");
             }
-            return Ok(pedido);
+            return Ok(pedidos);  // Retorna la lista de pedidos
         }
+
 
 
 
@@ -115,6 +117,7 @@ namespace TecApi.Controllers
             }
             return Ok(detalles);
         }
+
 
 
     }
