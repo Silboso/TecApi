@@ -35,7 +35,7 @@ namespace TecApi.Controllers
         [Route("GetAviso/{id}", Name = "GetAviso")]
         public IActionResult GetAvisoByID(int id)
         {
-            var aviso = _context.Aviso.Find(id);
+            var aviso = _context.Aviso.Include(a => a.Usuario).FirstOrDefault(a => a.IdAviso == id);
             if (aviso == null)
             {
                 return NotFound();
