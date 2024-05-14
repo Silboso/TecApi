@@ -26,7 +26,7 @@ namespace TecApi
             builder.Services.AddDbContext<TecApiContext>(options =>
             {
                 options.UseNpgsql(NeonConexion);
-            });
+            }, ServiceLifetime.Scoped);
 
             // Firebase Configuration
             FirebaseApp.Create(new AppOptions
@@ -54,7 +54,7 @@ namespace TecApi
 
 
             app.MapControllers();
-            app.Run("http://*:5104");
+            app.Run();
         }
     }
 }
