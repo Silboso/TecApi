@@ -11,8 +11,6 @@ namespace TecApi.Context
 
         public DbSet<Avisos> Aviso { get; set; }
 
-        public DbSet<AvisosEtiquetas> AvisoEtiqueta { get; set; }
-
         public DbSet<Beneficios> Beneficio { get; set; }
 
         public DbSet<Carritos> Carrito { get; set; }
