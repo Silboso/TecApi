@@ -50,19 +50,7 @@ namespace TecApi.Controllers
 
 
 
-        [HttpPost]
-        [Route("AddDirectorio")]
-        public IActionResult AddDirectorio([FromBody] Directorios directorio)
-        {
-            if (directorio == null)
-            {
-                return BadRequest("El directorio es nulo");
-            }
-
-            _context.Directorio.Add(directorio);
-            _context.SaveChanges();
-            return Ok();
-        }
+    
 
 
         //Lo usare para VSCODE
@@ -83,22 +71,80 @@ namespace TecApi.Controllers
         }
 
 
-
-        [HttpPost]
-        [Route("AddDirectorioss")]
-        public IActionResult AddDirectorioss([FromBody] Directorios directorio)
+        /*Metodo add similar a este
+         *       [HttpPost]
+        [Route("AddConductor")]
+        public IActionResult AddConductor([FromBody] Conductores conductor)
         {
-            if (directorio == null)
+            // Asegurarse de que el usuario existe
+            var usuarioExistente = _context.Usuario.FirstOrDefault(u => u.IdUsuario == conductor.IdUsuario);
+            if (usuarioExistente == null)
             {
-                return BadRequest("El directorio es nulo");
+                return BadRequest("Usuario no existe");
             }
 
-            _context.Directorio.Add(directorio);
-            _context.SaveChanges();
-            return Ok();
+            try
+            {
+                conductor.Usuario = usuarioExistente;  // Asociar el usuario existente al nuevo conductor
+                _context.Conductor.Add(conductor);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al agregar el conductor: " + ex.Message);
+            }
         }
 
+    */
 
+        [HttpPost]
+        [Route("AddDirectorio")]
+        public IActionResult AddDirectorio([FromBody] Directorios directorio)
+        {
+            // Asegurarse de que el usuario existe
+            var usuarioExistente = _context.Usuario.FirstOrDefault(u => u.IdUsuario == directorio.IdUsuario);
+            if (usuarioExistente == null)
+            {
+                return BadRequest("Usuario no existe");
+            }
+
+            try
+            {
+                directorio.Usuario = usuarioExistente;  // Asociar el usuario existente al nuevo directorio
+                _context.Directorio.Add(directorio);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al agregar el directorio: " + ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteDirectorio/{id}")]
+        public IActionResult DeleteDirectorio(int id)
+        {
+            var directorio = _context.Directorio.FirstOrDefault(x => x.IdDirectorio == id);
+            if (directorio == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.Directorio.Remove(directorio);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al eliminar el directorio: " + ex.Message);
+            }
+        }
+
+    
 
 
     }
