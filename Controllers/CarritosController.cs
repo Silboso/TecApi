@@ -42,40 +42,52 @@ namespace TecApi.Controllers
             return Ok(carrito);
         }
 
-        [HttpPost]
-        [Route("AddCarritoDetalle")]
-        public async Task<ActionResult<CarritoDetalle>> AddCarritoDetalle(CarritoDetalle carritoDetalle)
+
+ [HttpPost]
+[Route("AddCarritoDetalle")]
+public async Task<ActionResult<CarritoDetalle>> AddCarritoDetalle(CarritoDetalle carritoDetalle)
+{
+    try
+    {
+        // Verificar si el carrito existe
+        var carritoExistente = await _context.Carrito.FindAsync(carritoDetalle.IdCarrito);
+        if (carritoExistente == null)
         {
-            try
-            {
-                // Verificar si el carrito existe
-                var carritoExistente = await _context.Carrito.FindAsync(carritoDetalle.IdCarrito);
-                if (carritoExistente == null)
-                {
-                    return BadRequest($"El carrito con ID {carritoDetalle.IdCarrito} no existe.");
-                }
-
-                // Verificar si el alimento existe
-                var alimentoExistente = await _context.Alimento.FindAsync(carritoDetalle.IdAlimento);
-                if (alimentoExistente == null)
-                {
-                    return BadRequest($"El alimento con ID {carritoDetalle.IdAlimento} no existe.");
-                }
-
-                // Asignar los objetos de carrito y alimento al detalle de carrito
-                carritoDetalle.Carrito = carritoExistente;
-                carritoDetalle.Alimento = alimentoExistente;
-
-                _context.CarritoDetalle.Add(carritoDetalle);
-                await _context.SaveChangesAsync();
-
-                return Ok(carritoDetalle);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al agregar detalle de carrito: {ex.Message}");
-            }
+            return BadRequest($"El carrito con ID {carritoDetalle.IdCarrito} no existe.");
         }
+
+        // Verificar si el alimento existe
+        var alimentoExistente = await _context.Alimento.FindAsync(carritoDetalle.IdAlimento);
+        if (alimentoExistente == null)
+        {
+            return BadRequest($"El alimento con ID {carritoDetalle.IdAlimento} no existe.");
+        }
+
+        // Buscar un detalle de carrito existente con el mismo alimento
+        var detalleExistente = await _context.CarritoDetalle
+            .FirstOrDefaultAsync(cd => cd.IdCarrito == carritoDetalle.IdCarrito && cd.IdAlimento == carritoDetalle.IdAlimento);
+        
+        if (detalleExistente != null)
+        {
+            // Si el detalle ya existe, no agregamos un nuevo detalle
+            return BadRequest($"El alimento con ID {carritoDetalle.IdAlimento} ya está en el carrito.");
+        }
+
+        // Si no existe, agregamos un nuevo detalle
+        carritoDetalle.Carrito = carritoExistente;
+        carritoDetalle.Alimento = alimentoExistente;
+        _context.CarritoDetalle.Add(carritoDetalle);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(carritoDetalle);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Error al agregar detalle de carrito: {ex.Message}");
+    }
+}
+
 
         [HttpDelete]
         [Route("DeleteAllCarritoDetalle/{idCarrito}")]
