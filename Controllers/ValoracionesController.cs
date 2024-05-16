@@ -35,38 +35,47 @@ namespace TecApi.Controllers
         }
 
 
-        [HttpPost]
-        [Route("AddValoracion")]
-        public IActionResult AddValoracion([FromBody] Valoraciones valoracion)
-        {
-            if (valoracion == null)
-            {
-                return BadRequest("El objeto de valoración no puede ser nulo.");
-            }
+    [HttpPost]
+[Route("AddValoracion")]
+public IActionResult AddValoracion([FromBody] Valoraciones valoracion)
+{
+    if (valoracion == null)
+    {
+        return BadRequest("El objeto de valoración no puede ser nulo.");
+    }
 
-            // Verificar que el usuario y el alimento existen en la base de datos
-            var usuarioExistente = _context.Usuario.Find(valoracion.Usuario.IdUsuario);
-            var alimentoExistente = _context.Alimento.Find(valoracion.Alimento.IdAlimento);
+    // Verificar que el usuario y el alimento existen en la base de datos
+    var usuarioExistente = _context.Usuario.Find(valoracion.Usuario.IdUsuario);
+    var alimentoExistente = _context.Alimento.Find(valoracion.Alimento.IdAlimento);
 
-            // Verificar si el usuario y el alimento existen
-            if (usuarioExistente == null)
-            {
-                return BadRequest($"No existe un usuario con el ID {valoracion.Usuario.IdUsuario}.");
-            }
+    // Verificar si el usuario y el alimento existen
+    if (usuarioExistente == null)
+    {
+        return BadRequest($"No existe un usuario con el ID {valoracion.Usuario.IdUsuario}.");
+    }
 
-            if (alimentoExistente == null)
-            {
-                return BadRequest($"No existe un alimento con el ID {valoracion.Alimento.IdAlimento}.");
-            }
+    if (alimentoExistente == null)
+    {
+        return BadRequest($"No existe un alimento con el ID {valoracion.Alimento.IdAlimento}.");
+    }
 
-            // Asociar las referencias existentes con la valoración
-            valoracion.Usuario = usuarioExistente;
-            valoracion.Alimento = alimentoExistente;
+    // Verificar si ya existe una valoración del mismo usuario para el mismo alimento
+    var valoracionExistente = _context.Valoracion
+        .FirstOrDefault(v => v.Usuario.IdUsuario == valoracion.Usuario.IdUsuario && v.Alimento.IdAlimento == valoracion.Alimento.IdAlimento);
 
-            _context.Valoracion.Add(valoracion);
-            _context.SaveChanges();
-            return Ok(valoracion);
-        }
+    if (valoracionExistente != null)
+    {
+        return BadRequest("Este usuario ya ha valorado este alimento.");
+    }
+
+    // Asociar las referencias existentes con la valoración
+    valoracion.Usuario = usuarioExistente;
+    valoracion.Alimento = alimentoExistente;
+
+    _context.Valoracion.Add(valoracion);
+    _context.SaveChanges();
+    return Ok(valoracion);
+}
 
 
 
