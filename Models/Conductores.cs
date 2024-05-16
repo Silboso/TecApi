@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 
 namespace TecApi.Models
 {
@@ -20,5 +21,6 @@ namespace TecApi.Models
 
         [ForeignKey("IdUsuario")]
         public Usuarios Usuario { get; set; }
+
     }
 }
