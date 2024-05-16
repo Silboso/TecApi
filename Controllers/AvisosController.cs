@@ -77,10 +77,24 @@ namespace TecApi.Controllers
         [Route("GetComentariosByAviso/{id}", Name = "GetComentariosByAviso")]
         public IEnumerable<Comentarios> GetComentariosByAviso(int id)
         {
-            return _context.Comentario.Include(c => c.Usuario)
+            var comentarios= _context.Comentario.Include(c => c.Usuario)
                 .Where(c => c.IdAviso == id)
                 .ToList();
+
+            //Silencia el token con null
+            foreach (var comentario in comentarios)
+            {
+                comentario.Usuario.Token = null;
+            }
+            //Si comentarios es nulo, regresa un mensaje de error
+            if (comentarios == null)
+            {
+               return null;
+            }
+            return comentarios;
         }
+
+
         [HttpPost]
         [Route("CreateAviso")]
         public IActionResult CreateAviso(Avisos aviso)
