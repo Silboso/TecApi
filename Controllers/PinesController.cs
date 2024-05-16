@@ -62,19 +62,46 @@ namespace TecApi.Controllers
             return pines;
         }
 
-        //Agregar Pin
+        //Metodo add pero que verifique si el directorio existe
         [HttpPost]
         [Route("AddPin")]
         public IActionResult AddPin([FromBody] Pines pin)
         {
-            if (pin == null)
+            // Verificar si el directorio existe
+            var directorioExistente = _context.Directorio.FirstOrDefault(x => x.IdDirectorio == pin.IdDirectorio);
+            if (directorioExistente == null)
             {
-                return BadRequest("El pin es nulo");
+                return BadRequest("El directorio no existe");
             }
 
-            _context.Pin.Add(pin);
+            try
+            {
+                pin.Directorio = directorioExistente;  // Asociar el directorio existente al nuevo pin
+                _context.Pin.Add(pin);
+                _context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        //eliminar pines por iddirectorio
+        [HttpDelete]
+        [Route("DeletePin/{id}")]
+        public IActionResult DeletePin(int id)
+        {
+            var pin = _context.Pin.FirstOrDefault(x => x.IdPin == id);
+            if (pin == null)
+            {
+                return NotFound();
+            }
+
+            _context.Pin.Remove(pin);
             _context.SaveChanges();
             return Ok();
         }
+
     }
 }

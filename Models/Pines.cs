@@ -7,6 +7,7 @@ namespace TecApi.Models
     public class Pines
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("idpin")]
         public int IdPin { get; set; }
 

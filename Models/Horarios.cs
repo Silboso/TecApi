@@ -7,6 +7,7 @@ namespace TecApi.Models
     public class Horarios
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("idhorario")]
         public int IdHorario { get; set; }
 
@@ -17,12 +18,14 @@ namespace TecApi.Models
         public string Dia { get; set; }
 
         [Column("hsalida")]
-        public TimeSpan HSalida { get; set; }
+        public String HSalida { get; set; }
 
         [Column("hregreso")]
-        public TimeSpan HRegreso { get; set; }
+        public String HRegreso { get; set; }
 
         [ForeignKey("IdDirectorio")]
         public Directorios Directorio { get; set; }
+
+
     }
 }

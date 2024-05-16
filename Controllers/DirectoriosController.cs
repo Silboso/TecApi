@@ -144,7 +144,79 @@ namespace TecApi.Controllers
             }
         }
 
-    
+        //metodo para conseguir el ultimo iddirectorio
+        [HttpGet]
+        [Route("GetLastDirectoryId")]
+        public async Task<IActionResult> GetLastDirectoryId()
+        {
+            try
+            {
+                var lastDirectory = await _context.Directorio
+                    .OrderByDescending(d => d.IdDirectorio)
+                    .FirstOrDefaultAsync();
+
+                if (lastDirectory == null)
+                {
+                    return NotFound("No se encontraron directorios.");
+                }
+
+                return Ok(lastDirectory.IdDirectorio);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor: " + ex.Message);
+            }
+        }
+
+        //saber si ya tengo un directorio por idusuario
+        [HttpGet]
+        [Route("CheckIfUserHasDirectory/{id}")]
+        public async Task<IActionResult> CheckIfUserHasDirectory(int id)
+        {
+            try
+            {
+                var directory = await _context.Directorio
+                    .FirstOrDefaultAsync(d => d.IdUsuario == id);
+
+                if (directory == null)
+                {
+                    return NotFound("No se encontraron directorios.");
+                }
+
+                return Ok(directory);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor: " + ex.Message);
+            }
+        }
+
+        //Eliminar directorio por idusuario
+        [HttpDelete]
+        [Route("DeleteDirectoryByUserId/{id}")]
+        public async Task<IActionResult> DeleteDirectoryByUserId(int id)
+        {
+            try
+            {
+                var directory = await _context.Directorio
+                    .FirstOrDefaultAsync(d => d.IdUsuario == id);
+
+                if (directory == null)
+                {
+                    return NotFound("No se encontraron directorios.");
+                }
+
+                _context.Directorio.Remove(directory);
+                _context.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error interno del servidor: " + ex.Message);
+            }
+        }
+
 
 
     }
