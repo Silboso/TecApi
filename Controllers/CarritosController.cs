@@ -104,6 +104,20 @@ public async Task<ActionResult<CarritoDetalle>> AddCarritoDetalle(CarritoDetalle
             return Ok($"Todos los detalles del carrito con ID {idCarrito} han sido eliminados correctamente.");
         }
 
+[HttpDelete]
+[Route("DeleteCarritoDetalle/{idDetalle}")]
+public async Task<ActionResult> DeleteCarritoDetalle(int idDetalle)
+{
+    var detalleCarrito = await _context.CarritoDetalle.FindAsync(idDetalle);
+    if (detalleCarrito == null)
+    {
+        return NotFound($"Detalle de carrito con ID {idDetalle} no encontrado.");
+    }
+
+    _context.CarritoDetalle.Remove(detalleCarrito);
+    await _context.SaveChangesAsync();
+    return Ok($"Detalle de carrito con ID {idDetalle} eliminado correctamente.");
+}
 
 
         [HttpGet]
