@@ -24,6 +24,21 @@ namespace TecApi.Controllers
         }
 
         [HttpGet]
+        [Route("GetPedidoById/{id}", Name = "GetPedido")]
+        public IActionResult GetPedidoByID(int id)
+        {
+            var pedido = _context.PedidoEncabezado
+                                  .Include(p => p.Usuario)
+                                  .FirstOrDefault(p => p.IdPedido == id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+            return Ok(pedido);
+        }
+
+        [HttpGet]
         [Route("GetPedido/{userId}", Name = "GetPedidoByUserId")]
         public IActionResult GetPedidoByUserID(int userId)
         {
