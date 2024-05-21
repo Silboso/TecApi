@@ -131,6 +131,37 @@ namespace TecApi.Controllers
             return CreatedAtRoute("GetAviso", new { id = aviso.IdAviso }, aviso);
         }
 
+        [HttpPost]
+        [Route("CreateComentario/{idAviso}/{idUsuario}/{comentario}", Name = "CreateComentario")]
+        public IActionResult CreateComentario(int idAviso, int idUsuario, string comentario)
+        {
+            // Validar que el IdAviso exista en la base de datos
+            var avisoExiste = _context.Aviso.Any(a => a.IdAviso == idAviso);
+            if (!avisoExiste)
+            {
+                return BadRequest("El IdAviso no existe.");
+            }
+
+            // Validar que el IdUsuario exista en la base de datos
+            var usuarioExiste = _context.Usuario.Any(u => u.IdUsuario == idUsuario);
+            if (!usuarioExiste)
+            {
+                return BadRequest("El IdUsuario no existe.");
+            }
+            string fechatemporal = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            Comentarios nuevoComentario = new Comentarios
+            {
+                IdAviso = idAviso,
+                IdUsuario = idUsuario,
+                Contenido = comentario,
+                FechaCreacion = DateTime.UtcNow
+            };
+
+            _context.Comentario.Add(nuevoComentario);
+            _context.SaveChanges();
+            return CreatedAtRoute("GetComentariosByAviso", new { id = idAviso }, nuevoComentario);
+        }
+
 
     }
 }
