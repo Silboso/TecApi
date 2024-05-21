@@ -109,37 +109,39 @@ namespace TecApi.Controllers
 
 
 
-        [HttpGet]
-        [Route("GetAllConductoresDetails")]
-        public async Task<IActionResult> GetAllConductoresDetails()
+      [HttpGet]
+[Route("GetAllConductoresDetails")]
+public async Task<IActionResult> GetAllConductoresDetails()
+{
+    var conductores = await _context.Conductor
+        .Include(conductor => conductor.Usuario)
+        .Select(conductor => new
         {
-            var conductores = await _context.Conductor
-                .Include(conductor => conductor.Usuario)
-                .Select(conductor => new
+            ConductorId = conductor.IdConductor,
+            UsuarioId = conductor.IdUsuario,
+            Telefono = conductor.NoTelefono,
+            UsuarioNombre = conductor.Usuario.Nombre,
+            UsuarioApellido = conductor.Usuario.ApellidoPaterno,
+            Directorio = _context.Directorio
+                .Where(d => d.IdUsuario == conductor.IdUsuario)
+                .Select(d => new
                 {
-                    ConductorId = conductor.IdConductor,
-                    UsuarioId = conductor.IdUsuario,
-                    Telefono = conductor.NoTelefono,
-                    UsuarioNombre = conductor.Usuario.Nombre, // Asegúrate de tener un campo Nombre en la entidad Usuario
-                    Directorio = _context.Directorio
-                        .Where(d => d.IdUsuario == conductor.IdUsuario)
-                        .Select(d => new {
-                            Marca = d.Marca,
-                            Modelo = d.Modelo,
-                            Color = d.Color,
-                            Horarios = _context.Horario.Where(h => h.IdDirectorio == d.IdDirectorio).ToList(),
-                            Pines = _context.Pin.Where(p => p.IdDirectorio == d.IdDirectorio).ToList()
-                        }).FirstOrDefault()
-                })
-                .ToListAsync();
+                    Marca = d.Marca,
+                    Modelo = d.Modelo,
+                    Color = d.Color,
+                    Horarios = _context.Horario.Where(h => h.IdDirectorio == d.IdDirectorio).ToList() ?? new List<Horarios>(),
+                    Pines = _context.Pin.Where(p => p.IdDirectorio == d.IdDirectorio).ToList() ?? new List<Pines>()
+                }).FirstOrDefault() ?? new { Marca = "", Modelo = "", Color = "", Horarios = new List<Horarios>(), Pines = new List<Pines>() }
+        })
+        .ToListAsync();
 
+    if (conductores == null || !conductores.Any())
+    {
+        return NotFound("No se encontraron conductores con información completa.");
+    }
+    return Ok(conductores);
+}
 
-            if (conductores == null || !conductores.Any())
-            {
-                return NotFound("No se encontraron conductores con información completa.");
-            }
-            return Ok(conductores);
-        }
 
 
         //Metodo para agregar conductores de manera correcta
@@ -173,7 +175,8 @@ namespace TecApi.Controllers
                     UsuarioApellido = conductor.Usuario.ApellidoPaterno,
                     Directorio = _context.Directorio
                         .Where(d => d.IdUsuario == conductor.IdUsuario)
-                        .Select(d => new {
+                        .Select(d => new
+                        {
                             Marca = d.Marca,
                             Modelo = d.Modelo,
                             Color = d.Color,
@@ -281,7 +284,9 @@ namespace TecApi.Controllers
             return Ok("Conductor y recursos relacionados eliminados");
         }
 
+       
 
 
     }
+
 }
