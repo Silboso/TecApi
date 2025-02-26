@@ -1,39 +1,19 @@
-# TecAPI
- API de la TecApp
+TecAPI es un backend desarrollado en C#, con .NET y Entity Framework, diseñado para que los alumnos de una institución educativa puedan gestionar de manera segura sus credenciales de acceso. Permite la recuperación, cambio y administración de contraseñas, así como la validación de identidad mediante autenticación segura. Adicionalmente es posible hacer uso de servicios como peticion de alimentos a cafeteria y un foro cuyo objetivo es mantener a los alumnos enterados de cualquier aviso.
+✨ Características
 
-## Modelo de datos
-Para cada tabla se genero un modelo, se encuentran en la carpeta models, en casos de error, avisen para ver si se corrige del lado del back end o de la base de datos.
-	>Se le puede menear sin pedos a los suyos<
-	>Al modelo de usuarios NO LE MENEEN<
+✔️ Registro y autenticación de estudiantes mediante JWT.
+✔️ Recuperación de contraseña a través de correo electrónico.
+✔️ Cambio y actualización de credenciales de forma segura.
+✔️ Autorización basada en roles (estudiante, administrador).
+✔️ Cifrado de contraseñas con bcrypt.
+✔️ Integración con SQL Server mediante Entity Framework Core.
+✔️ Documentación automática con Swagger.
+⚙️ Tecnologías Usadas
 
-## Controladores
-No hay un controlador por cada modelo, se genero un controlador para cada tabla primaria, en caso de que el numero de operaciones les haga muy grande el controlador,
-Hagan otro controlador para la misma tabla, pero con otro nombre, por ejemplo, si el controlador de Avisos se vuelve muy grande, separen las operaciones por tabla
-y creen un controlador secundario con el nombre de la tabla y el sufijo Controller, por ejemplo AvisosController.
-	>Se le puede menear sin pedos a los suyos<
-
-### Rutas
-El enrutamiento y los endpoints se crean con la siguiente estructura:
- [Route("[controller]")] - .Net interpreta que el nombre del controlador es el nombre de la clase sin el sufijo Controller. 
-							Si el controlador se llama AlimentosController, la ruta base es /Alimentos
- [Route("GetAllAlimentos")] - Se agrega a la ruta base, en este caso, la ruta completa es /Alimentos/GetAllAlimentos
- Despues del enrutamiento se agrega el tipo de petici�n:
- [HttpGet] - Indica que el endpoint es de tipo GET, osea para obtener datos
- [HttpPost] - Indica que el endpoint es de tipo POST, osea para enviar datos
- [HttpPut] - Indica que el endpoint es de tipo PUT, osea para actualizar datos
- [HttpDelete] - Indica que el endpoint es de tipo DELETE, osea para eliminar datos
-
-## Contexto
-El contexto es la clase que se encarga de la conexi�n con la base de datos, no lo tienten por que si le mueven algo sin saberle le pueden tronar la chamba a los demas.
-Si se necesita un cambio en las configuraciones de contexto, pidanselas a alguien que sepa, no lo hagan ustedes.
-	>NO LE MENEEN<
-
-## _context
-Es la variable que se encarga de las operaciones con la base de datos, no le cambien el tipo por que si no le saben, se pueden desmadrar su controlador.
-Si tienen dudas con las operaciones, chat gpt le sabe bien a esa madre (tambien pregunten si quieren)
-
-## Program.cs
-Lo mismo que el contexto, no le muevan ni de pedo.
-Si necesitan a�adir un servicio, mencionenlo a alguien que sepa, no lo hagan ustedes.
-      >Para los que ocupan LogIn y FCM, Tenemos que ver ese pedo luego
-	   NO LE MENEEN<
+    Lenguaje: C#
+    Framework: .NET 7+
+    ORM: Entity Framework Core
+    Base de Datos: SQL Server
+    Autenticación: JWT + bcrypt
+    Correo Electrónico: SMTP para recuperación de credenciales
+    Documentación: Swagger
