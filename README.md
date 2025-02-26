@@ -8,6 +8,7 @@ TecAPI es un backend desarrollado en C#, con .NET y Entity Framework, diseñado 
 ✔️ Cifrado de contraseñas con bcrypt.
 ✔️ Integración con SQL Server mediante Entity Framework Core.
 ✔️ Documentación automática con Swagger.
+
 ⚙️ Tecnologías Usadas
 
     Lenguaje: C#
